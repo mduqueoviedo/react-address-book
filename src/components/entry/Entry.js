@@ -2,6 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export class Entry extends React.Component {
+  onEditHandler = event => {
+    this.props.onEdit(event.target.dataset.entryKey);
+  };
+
   onDeleteHandler = event => {
     this.props.onDelete(event.target.dataset.entryKey);
   };
@@ -16,6 +20,9 @@ export class Entry extends React.Component {
         <div>{email}</div>
         <div>{country}</div>
 
+        <div onClick={this.onEditHandler} data-entry-key={this.props.entryKey}>
+          Edit
+        </div>
         <div
           onClick={this.onDeleteHandler}
           data-entry-key={this.props.entryKey}
@@ -36,4 +43,5 @@ Entry.propTypes = {
     country: PropTypes.string.isRequired,
   }).isRequired,
   onDelete: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
 };

@@ -12,14 +12,25 @@ ReactModal.setAppElement('#root');
 export class App extends Component {
   state = {
     isModalOpen: false,
+    editingEntry: undefined,
     entries: {
-      '1': {
+      // TODO: Remove in production
+      '1b3a44ae-946b-4de4-aa00-a121c30826c5': {
         firstName: 'Holi',
         lastName: 'Holi2',
         email: 'email',
         country: 'es',
       },
     },
+  };
+
+  editEntry = entryKey => {
+    this.setState(prevState => {
+      return {
+        editingEntry: { ...prevState.entries[entryKey], id: entryKey },
+        isModalOpen: true,
+      };
+    });
   };
 
   removeEntry = entryKey => {
@@ -37,31 +48,43 @@ export class App extends Component {
             entry={this.state.entries[entryKey]}
             entryKey={entryKey}
             key={entryKey}
+            onEdit={this.editEntry}
             onDelete={this.removeEntry}
           />
         ))
       : null;
 
-  setIsModalOpen = newModalState => {
-    return () => this.modalStateHandler(newModalState);
-  };
+  setIsModalOpen = newModalState => () => this.modalStateHandler(newModalState);
 
   modalStateHandler = modalState => {
-    this.setState({
-      isModalOpen: modalState,
+    this.setState(prevState => {
+      return {
+        isModalOpen: modalState,
+        editingEntry: modalState ? prevState.editingEntry : undefined,
+      };
     });
   };
 
   onEntrySave = newEntry => {
-    const newEntryId = uuid();
-    // eslint-disable-next-line react/no-access-state-in-setstate
-    const oldEntries = this.state.entries;
-    oldEntries[newEntryId] = newEntry;
-
+    const entryId = newEntry.id !== '' ? newEntry.id : uuid();
     this.setState(prevState => {
-      return { entries: { ...prevState.entries, [newEntryId]: newEntry } };
+      return {
+        entries: { ...prevState.entries, [entryId]: newEntry },
+        isModalOpen: false,
+        editingEntry: undefined,
+      };
     });
   };
+
+  renderModal = () =>
+    this.state.isModalOpen ? (
+      <NewEntryModal
+        isOpen={this.state.isModalOpen}
+        handleClose={this.setIsModalOpen(false)}
+        onEntrySave={this.onEntrySave}
+        entryToEdit={this.state.editingEntry}
+      />
+    ) : null;
 
   render() {
     return (
@@ -77,11 +100,7 @@ export class App extends Component {
           <FontAwesomeIcon icon="user-plus" />
         </div>
 
-        <NewEntryModal
-          isOpen={this.state.isModalOpen}
-          handleClose={this.setIsModalOpen(false)}
-          onEntrySave={this.onEntrySave}
-        />
+        {this.renderModal()}
       </>
     );
   }

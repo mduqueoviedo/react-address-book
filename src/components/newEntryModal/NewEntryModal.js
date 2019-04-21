@@ -9,12 +9,19 @@ import {
 } from './newEntryModalStyle';
 
 export class NewEntryModal extends Component {
-  state = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    country: '',
-  };
+  constructor(props) {
+    super(props);
+    this.state =
+      this.props.entryToEdit !== undefined
+        ? {
+            id: this.props.entryToEdit.id,
+            firstName: this.props.entryToEdit.firstName,
+            lastName: this.props.entryToEdit.lastName,
+            email: this.props.entryToEdit.email,
+            country: this.props.entryToEdit.country,
+          }
+        : { id: '', firstName: '', lastName: '', email: '', country: '' };
+  }
 
   handleFormInputChange = event => {
     const { name, value } = event.target;
@@ -42,6 +49,12 @@ export class NewEntryModal extends Component {
           <FontAwesomeIcon icon="times" />
         </div>
         <form noValidate>
+          <input
+            type="hidden"
+            name="id"
+            value={this.state.id}
+            onChange={this.handleFormInputChange}
+          />
           First Name
           <input
             type="text"
