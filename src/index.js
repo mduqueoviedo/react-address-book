@@ -1,14 +1,8 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
-import { rootStyle } from './appStyle';
+import React from 'react';
+import { initFontAwesomeIcons } from './init';
+import { App } from './App';
 
-class App extends React.Component {
-  render() {
-    return (
-      <div className={rootStyle}>
-        <h1>Hello World from React boilerplate</h1>
-      </div>
-    );
-  }
-}
+initFontAwesomeIcons();
+
 ReactDOM.render(<App />, document.getElementById('root'));
