@@ -1,8 +1,8 @@
 {
-  "name": "react-agenda",
+  "name": "react-address-book",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/mduqueoviedo/react-agenda.git",
+  "repository": "https://github.com/mduqueoviedo/react-address-book.git",
   "author": "Marcos Duque <mduqueoviedo@gmail.com>",
   "license": "MIT",
   "private": true,
@@ -10,6 +10,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.17",
     "@fortawesome/free-solid-svg-icons": "^5.8.1",
     "@fortawesome/react-fontawesome": "^0.1.4",
+    "dexie": "^2.0.4",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
