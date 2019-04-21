@@ -13,7 +13,9 @@
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "typestyle": "^2.0.2"
+    "react-modal": "^3.8.1",
+    "typestyle": "^2.0.2",
+    "uuidv4": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
