@@ -6,20 +6,14 @@ import {
   modalContainerStyle,
   closeControlStyle,
   modalStyle,
-} from './newEntryModalStyle';
+} from './newContactModalStyle';
 
-export class NewEntryModal extends Component {
+export class NewContactModal extends Component {
   constructor(props) {
     super(props);
     this.state =
-      this.props.entryToEdit !== undefined
-        ? {
-            id: this.props.entryToEdit.id,
-            firstName: this.props.entryToEdit.firstName,
-            lastName: this.props.entryToEdit.lastName,
-            email: this.props.entryToEdit.email,
-            country: this.props.entryToEdit.country,
-          }
+      this.props.contactToEdit !== undefined
+        ? { ...this.props.contactToEdit }
         : { id: '', firstName: '', lastName: '', email: '', country: '' };
   }
 
@@ -31,8 +25,8 @@ export class NewEntryModal extends Component {
     });
   };
 
-  handleSubmitEntry = () => {
-    this.props.onEntrySave(this.state);
+  handleSubmitContact = () => {
+    this.props.onContactSave(this.state);
   };
 
   render = () => (
@@ -80,7 +74,7 @@ export class NewEntryModal extends Component {
             value={this.state.country}
             onChange={this.handleFormInputChange}
           />
-          <button type="button" onClick={this.handleSubmitEntry}>
+          <button type="button" onClick={this.handleSubmitContact}>
             Submit
           </button>
         </form>

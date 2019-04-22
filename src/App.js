@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { rootStyle, newEntryElementStyle } from './appStyle';
-import { Entry } from './components/entry/Entry';
-import { NewEntryModal } from './components/newEntryModal/NewEntryModal';
+import { rootStyle, newContactElementStyle } from './appStyle';
+import { Contact } from './components/contact/Contact';
+import { NewContactModal } from './components/newContactModal/NewContactModal';
 import { StorageApi } from './storage/storageApi';
 
 // Screen readers
@@ -13,40 +13,42 @@ export class App extends Component {
 
   state = {
     isModalOpen: false,
-    editingEntry: undefined,
-    entries: [],
+    contactToEdit: undefined,
+    contacts: [],
   };
 
   componentDidMount() {
-    this.refreshEntries();
+    this.refreshContacts();
   }
 
-  refreshEntries = () => {
-    this.storageApi.retrieveAllEntries().then(entries => {
-      this.setState({ entries, isModalOpen: false });
+  refreshContacts = () => {
+    this.storageApi.retrieveAllContacts().then(contacts => {
+      this.setState({ contacts, isModalOpen: false });
     });
   };
 
-  editEntry = entryKey => {
+  editContact = contactId => {
     this.setState(prevState => ({
-      editingEntry: prevState.entries.find(entry => entryKey === entry.id),
+      contactToEdit: prevState.contacts.find(
+        contact => contactId === contact.id
+      ),
       isModalOpen: true,
     }));
   };
 
-  removeEntry = entryKey => {
-    this.storageApi.deleteEntry(entryKey);
-    this.refreshEntries();
+  removeContact = contactId => {
+    this.storageApi.deleteContact(contactId);
+    this.refreshContacts();
   };
 
-  renderEntries = () =>
-    this.state.entries.length > 0
-      ? this.state.entries.map(entry => (
-          <Entry
-            entry={entry}
-            key={entry.id}
-            onEdit={this.editEntry}
-            onDelete={this.removeEntry}
+  renderContacts = () =>
+    this.state.contacts.length > 0
+      ? this.state.contacts.map(contact => (
+          <Contact
+            contactData={contact}
+            key={contact.id}
+            onEdit={this.editContact}
+            onDelete={this.removeContact}
           />
         ))
       : null;
@@ -57,23 +59,23 @@ export class App extends Component {
     this.setState(prevState => {
       return {
         isModalOpen: modalState,
-        editingEntry: modalState ? prevState.editingEntry : undefined,
+        contactToEdit: modalState ? prevState.contactToEdit : undefined,
       };
     });
   };
 
-  onEntrySave = newEntry => {
-    this.storageApi.saveEntry(newEntry);
-    this.refreshEntries();
+  onContactSave = newContact => {
+    this.storageApi.saveContact(newContact);
+    this.refreshContacts();
   };
 
   renderModal = () =>
     this.state.isModalOpen ? (
-      <NewEntryModal
+      <NewContactModal
         isOpen={this.state.isModalOpen}
         handleClose={this.setIsModalOpen(false)}
-        onEntrySave={this.onEntrySave}
-        entryToEdit={this.state.editingEntry}
+        onContactSave={this.onContactSave}
+        contactToEdit={this.state.contactToEdit}
       />
     ) : null;
 
@@ -83,9 +85,9 @@ export class App extends Component {
         <div className={rootStyle}>
           <h1>Hello World from React boilerplate</h1>
         </div>
-        <div>{this.renderEntries()}</div>
+        <div>{this.renderContacts()}</div>
         <div
-          className={newEntryElementStyle}
+          className={newContactElementStyle}
           onClick={this.setIsModalOpen(true)}
         >
           <FontAwesomeIcon icon="user-plus" />

@@ -4,7 +4,7 @@ export const rootStyle = style({
   fontFamily: 'Roboto',
 });
 
-export const newEntryElementStyle = style({
+export const newContactElementStyle = style({
   position: 'fixed',
   bottom: 30,
   right: 30,

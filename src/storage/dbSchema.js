@@ -4,13 +4,13 @@ import Dexie from 'dexie';
 const db = new Dexie('react-address-book');
 
 db.version(1).stores({
-  entries: '&id, firstName, lastName, email, country',
+  contacts: '&id, firstName, lastName, email, country',
 });
 
 /* 
-db.entries.clear();
+db.contacts.clear();
 
-db.entries.bulkAdd([
+db.contacts.bulkAdd([
   {
     id: uuid(),
     firstName: 'Name 1',

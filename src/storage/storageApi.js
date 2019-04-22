@@ -5,13 +5,13 @@ export class StorageApi {
     this.dbWrapper = new DbWrapper();
   }
 
-  retrieveAllEntries = () => this.dbWrapper.retrieveAllEntries();
+  retrieveAllContacts = () => this.dbWrapper.retrieveAllContacts();
 
-  deleteEntry = entryKey => {
-    return this.dbWrapper.deleteEntry(entryKey);
+  deleteContact = contactId => {
+    return this.dbWrapper.deleteContact(contactId);
   };
 
-  saveEntry = entryData => {
-    return this.dbWrapper.saveEntry(entryData);
+  saveContact = contactInfo => {
+    return this.dbWrapper.saveContact(contactInfo);
   };
 }

@@ -2,17 +2,17 @@ import uuid from 'uuidv4';
 import db from './dbSchema';
 
 export class DbWrapper {
-  retrieveAllEntries = () => db.entries.toArray();
+  retrieveAllContacts = () => db.contacts.toArray();
 
-  deleteEntry = entryKey => {
-    db.entries.delete(entryKey);
+  deleteContact = contactId => {
+    db.contacts.delete(contactId);
   };
 
-  saveEntry = entryData => {
-    if (entryData.id) {
-      db.entries.update(entryData.id, { ...entryData });
+  saveContact = contactInfo => {
+    if (contactInfo.id) {
+      db.contacts.update(contactInfo.id, { ...contactInfo });
     } else {
-      db.entries.add({ ...entryData, id: uuid() });
+      db.contacts.add({ ...contactInfo, id: uuid() });
     }
   };
 }
