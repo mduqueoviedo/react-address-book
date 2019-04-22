@@ -31,5 +31,6 @@
     "Blob": true,
     "navigator": true
   },
-  "parser": "babel-eslint"
+  "parser": "babel-eslint",
+  "env": { "jest": true }
 }
