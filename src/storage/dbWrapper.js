@@ -1,17 +1,18 @@
+import uuid from 'uuidv4';
 import db from './dbSchema';
 
 export class DbWrapper {
   retrieveAllEntries = () => db.entries.toArray();
 
   deleteEntry = entryKey => {
-    db.entries
-      .where('id')
-      .equals(entryKey)
-      .delete();
+    db.entries.delete(entryKey);
   };
 
   saveEntry = entryData => {
-    console.log('Saving', entryData);
-    // save entry (new or edit)
+    if (entryData.id) {
+      db.entries.update(entryData.id, { ...entryData });
+    } else {
+      db.entries.add({ ...entryData, id: uuid() });
+    }
   };
 }

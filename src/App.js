@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import uuid from 'uuidv4';
 import { rootStyle, newEntryElementStyle } from './appStyle';
 import { Entry } from './components/entry/Entry';
-// import { deleteProperty } from './utils/objectUtils';
 import { NewEntryModal } from './components/newEntryModal/NewEntryModal';
 import { StorageApi } from './storage/storageApi';
 
@@ -25,17 +23,15 @@ export class App extends Component {
 
   refreshEntries = () => {
     this.storageApi.retrieveAllEntries().then(entries => {
-      this.setState({ entries });
+      this.setState({ entries, isModalOpen: false });
     });
   };
 
   editEntry = entryKey => {
-    this.setState(prevState => {
-      return {
-        editingEntry: { ...prevState.entries[entryKey], id: entryKey },
-        isModalOpen: true,
-      };
-    });
+    this.setState(prevState => ({
+      editingEntry: prevState.entries.find(entry => entryKey === entry.id),
+      isModalOpen: true,
+    }));
   };
 
   removeEntry = entryKey => {
@@ -67,14 +63,8 @@ export class App extends Component {
   };
 
   onEntrySave = newEntry => {
-    const entryId = newEntry.id !== '' ? newEntry.id : uuid();
-    this.setState(prevState => {
-      return {
-        entries: { ...prevState.entries, [entryId]: newEntry },
-        isModalOpen: false,
-        editingEntry: undefined,
-      };
-    });
+    this.storageApi.saveEntry(newEntry);
+    this.refreshEntries();
   };
 
   renderModal = () =>
