@@ -1,15 +1,17 @@
-// import Dexie from 'dexie';
+import db from './dbSchema';
 
-export const retrieveAllEntries = () => {
-  // return object with all entries
-};
+export class DbWrapper {
+  retrieveAllEntries = () => db.entries.toArray();
 
-export const deleteEntry = entryKey => {
-  console.log('Deleting', entryKey);
-  // remove entry
-};
+  deleteEntry = entryKey => {
+    db.entries
+      .where('id')
+      .equals(entryKey)
+      .delete();
+  };
 
-export const saveEntry = entryData => {
-  console.log('Saving', entryData);
-  // save entry (new or edit)
-};
+  saveEntry = entryData => {
+    console.log('Saving', entryData);
+    // save entry (new or edit)
+  };
+}

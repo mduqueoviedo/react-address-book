@@ -4,24 +4,29 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import uuid from 'uuidv4';
 import { rootStyle, newEntryElementStyle } from './appStyle';
 import { Entry } from './components/entry/Entry';
-import { deleteProperty } from './utils/objectUtils';
+// import { deleteProperty } from './utils/objectUtils';
 import { NewEntryModal } from './components/newEntryModal/NewEntryModal';
+import { StorageApi } from './storage/storageApi';
 
 // Screen readers
 ReactModal.setAppElement('#root');
 export class App extends Component {
+  storageApi = new StorageApi();
+
   state = {
     isModalOpen: false,
     editingEntry: undefined,
-    entries: {
-      // TODO: Remove in production
-      '1b3a44ae-946b-4de4-aa00-a121c30826c5': {
-        firstName: 'Holi',
-        lastName: 'Holi2',
-        email: 'email',
-        country: 'es',
-      },
-    },
+    entries: [],
+  };
+
+  componentDidMount() {
+    this.refreshEntries();
+  }
+
+  refreshEntries = () => {
+    this.storageApi.retrieveAllEntries().then(entries => {
+      this.setState({ entries });
+    });
   };
 
   editEntry = entryKey => {
@@ -34,20 +39,16 @@ export class App extends Component {
   };
 
   removeEntry = entryKey => {
-    this.setState(prevState => {
-      return {
-        entries: deleteProperty(prevState.entries, entryKey),
-      };
-    });
+    this.storageApi.deleteEntry(entryKey);
+    this.refreshEntries();
   };
 
   renderEntries = () =>
-    Object.keys(this.state.entries).length > 0
-      ? Object.keys(this.state.entries).map(entryKey => (
+    this.state.entries.length > 0
+      ? this.state.entries.map(entry => (
           <Entry
-            entry={this.state.entries[entryKey]}
-            entryKey={entryKey}
-            key={entryKey}
+            entry={entry}
+            key={entry.id}
             onEdit={this.editEntry}
             onDelete={this.removeEntry}
           />

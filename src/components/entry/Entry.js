@@ -11,7 +11,7 @@ export class Entry extends React.Component {
   };
 
   render() {
-    const { firstName, lastName, email, country } = this.props.entry;
+    const { id, firstName, lastName, email, country } = this.props.entry;
     return (
       <div>
         <div>
@@ -20,13 +20,10 @@ export class Entry extends React.Component {
         <div>{email}</div>
         <div>{country}</div>
 
-        <div onClick={this.onEditHandler} data-entry-key={this.props.entryKey}>
+        <div onClick={this.onEditHandler} data-entry-key={id}>
           Edit
         </div>
-        <div
-          onClick={this.onDeleteHandler}
-          data-entry-key={this.props.entryKey}
-        >
+        <div onClick={this.onDeleteHandler} data-entry-key={id}>
           Delete
         </div>
       </div>
@@ -35,8 +32,8 @@ export class Entry extends React.Component {
 }
 
 Entry.propTypes = {
-  entryKey: PropTypes.string.isRequired,
   entry: PropTypes.shape({
+    id: PropTypes.string.isRequired,
     firstName: PropTypes.string.isRequired,
     lastName: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,

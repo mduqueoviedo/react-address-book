@@ -1,11 +1,17 @@
-export const retrieveAllEntries = () => {
-    // return object with all entries
-}
+import { DbWrapper } from './dbWrapper';
 
-export const deleteEntry = (entryKey) => {
-    // remove entry
-}
+export class StorageApi {
+  constructor() {
+    this.dbWrapper = new DbWrapper();
+  }
 
-export const saveEntry = (entryData) => {
-    // save entry (new or edit)
+  retrieveAllEntries = () => this.dbWrapper.retrieveAllEntries();
+
+  deleteEntry = entryKey => {
+    return this.dbWrapper.deleteEntry(entryKey);
+  };
+
+  saveEntry = entryData => {
+    return this.dbWrapper.saveEntry(entryData);
+  };
 }
