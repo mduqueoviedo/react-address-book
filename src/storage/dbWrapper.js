@@ -2,7 +2,8 @@ import uuid from 'uuidv4';
 import db from './dbSchema';
 
 export class DbWrapper {
-  retrieveAllContacts = () => db.contacts.toArray();
+  retrieveAllContacts = () =>
+    db.contacts.orderBy('lastName', 'firstName').toArray();
 
   deleteContact = contactId => {
     db.contacts.delete(contactId);

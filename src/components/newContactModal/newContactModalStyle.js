@@ -8,7 +8,7 @@ export const modalStyle = {
 };
 
 export const modalOverlayStyle = {
-  backgroundColor: 'rgba(0, 0, 0, 0.6)',
+  backgroundColor: 'rgba(0, 0, 0, 0.8)',
 };
 
 export const modalContainerStyle = style({
@@ -21,3 +21,5 @@ export const closeControlStyle = style({
   alignSelf: 'flex-end',
   cursor: 'pointer',
 });
+
+export const formGroupStyle = style({});

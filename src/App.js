@@ -91,20 +91,19 @@ export class App extends Component {
 
   render() {
     return (
-      <>
-        <div className={rootStyle}>
-          <h1>Hello World from React boilerplate</h1>
-        </div>
+      <div className={rootStyle}>
+        <h2>React Address Book</h2>
         <div>{this.renderContacts()}</div>
         <div
           className={newContactElementStyle}
           onClick={this.setIsModalOpen(true)}
+          title="New Contact"
         >
           <FontAwesomeIcon icon="user-plus" />
         </div>
 
         {this.renderModal()}
-      </>
+      </div>
     );
   }
 }

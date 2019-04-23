@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
+import { getCodeList } from 'country-list';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   modalOverlayStyle,
   modalContainerStyle,
   closeControlStyle,
   modalStyle,
+  formGroupStyle,
 } from './newContactModalStyle';
 
 export class NewContactModal extends Component {
@@ -29,6 +31,14 @@ export class NewContactModal extends Component {
     this.props.onContactSave(this.state);
   };
 
+  renderCountryOptions = () => {
+    const countryItems = getCodeList();
+
+    return Object.keys(countryItems).map(countryCode => (
+      <option value={countryCode}>{countryItems[countryCode]}</option>
+    ));
+  };
+
   render = () => (
     <ReactModal
       isOpen={this.props.isOpen}
@@ -49,31 +59,45 @@ export class NewContactModal extends Component {
             value={this.state.id}
             onChange={this.handleFormInputChange}
           />
-          First Name
-          <input
-            type="text"
-            name="firstName"
-            value={this.state.firstName}
-            onChange={this.handleFormInputChange}
-          />
-          <input
-            type="text"
-            name="lastName"
-            value={this.state.lastName}
-            onChange={this.handleFormInputChange}
-          />
-          <input
-            type="text"
-            name="email"
-            value={this.state.email}
-            onChange={this.handleFormInputChange}
-          />
-          <input
-            type="text"
-            name="country"
-            value={this.state.country}
-            onChange={this.handleFormInputChange}
-          />
+          <div className={formGroupStyle}>
+            First Name
+            <input
+              type="text"
+              name="firstName"
+              value={this.state.firstName}
+              onChange={this.handleFormInputChange}
+            />
+          </div>
+
+          <div className={formGroupStyle}>
+            Last Name
+            <input
+              type="text"
+              name="lastName"
+              value={this.state.lastName}
+              onChange={this.handleFormInputChange}
+            />
+          </div>
+
+          <div className={formGroupStyle}>
+            Email
+            <input
+              type="text"
+              name="email"
+              value={this.state.email}
+              onChange={this.handleFormInputChange}
+            />
+          </div>
+          <div className={formGroupStyle}>
+            Country
+            <select
+              name="country"
+              value={this.state.country}
+              onChange={this.handleFormInputChange}
+            >
+              {this.renderCountryOptions()}
+            </select>
+          </div>
           <button type="button" onClick={this.handleSubmitContact}>
             Submit
           </button>
