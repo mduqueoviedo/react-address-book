@@ -5,6 +5,8 @@ export class DbWrapper {
   retrieveAllContacts = () =>
     db.contacts.orderBy('lastName', 'firstName').toArray();
 
+  searchContacts = _ => db.contacts.orderBy('lastName', 'firstName').toArray();
+
   deleteContact = contactId => {
     db.contacts.delete(contactId);
   };

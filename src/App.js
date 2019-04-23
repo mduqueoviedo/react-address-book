@@ -25,7 +25,7 @@ export class App extends Component {
 
   refreshContacts = () => {
     this.storageApi.retrieveAllContacts().then(contacts => {
-      this.setState({ contacts, isModalOpen: true });
+      this.setState({ contacts, isModalOpen: false, contactFormErrors: [] });
     });
   };
 
