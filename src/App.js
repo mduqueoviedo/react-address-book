@@ -5,6 +5,7 @@ import { rootStyle, newContactElementStyle } from './appStyle';
 import { Contact } from './components/contact/Contact';
 import { NewContactModal } from './components/newContactModal/NewContactModal';
 import { StorageApi } from './storage/storageApi';
+import { validateContact } from './utils/contactValidation';
 
 // Screen readers
 ReactModal.setAppElement('#root');
@@ -15,6 +16,7 @@ export class App extends Component {
     isModalOpen: false,
     contactToEdit: undefined,
     contacts: [],
+    contactFormErrors: [],
   };
 
   componentDidMount() {
@@ -41,6 +43,29 @@ export class App extends Component {
     this.refreshContacts();
   };
 
+  setIsModalOpen = newModalState => () => this.modalStateHandler(newModalState);
+
+  modalStateHandler = modalState => {
+    this.setState(prevState => {
+      return {
+        isModalOpen: modalState,
+        contactToEdit: modalState ? prevState.contactToEdit : undefined,
+        contactFormErrors: [],
+      };
+    });
+  };
+
+  onContactSave = newContact => {
+    const formValidationErrors = validateContact(newContact);
+
+    if (formValidationErrors.length === 0) {
+      this.storageApi.saveContact(newContact);
+      this.refreshContacts();
+    } else {
+      this.setState({ contactFormErrors: formValidationErrors });
+    }
+  };
+
   renderContacts = () =>
     this.state.contacts.length > 0
       ? this.state.contacts.map(contact => (
@@ -53,22 +78,6 @@ export class App extends Component {
         ))
       : null;
 
-  setIsModalOpen = newModalState => () => this.modalStateHandler(newModalState);
-
-  modalStateHandler = modalState => {
-    this.setState(prevState => {
-      return {
-        isModalOpen: modalState,
-        contactToEdit: modalState ? prevState.contactToEdit : undefined,
-      };
-    });
-  };
-
-  onContactSave = newContact => {
-    this.storageApi.saveContact(newContact);
-    this.refreshContacts();
-  };
-
   renderModal = () =>
     this.state.isModalOpen ? (
       <NewContactModal
@@ -76,6 +85,7 @@ export class App extends Component {
         handleClose={this.setIsModalOpen(false)}
         onContactSave={this.onContactSave}
         contactToEdit={this.state.contactToEdit}
+        formErrors={this.state.contactFormErrors}
       />
     ) : null;
 
