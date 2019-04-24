@@ -43,11 +43,19 @@ export class NewContactModal extends Component {
   renderCountryOptions = () => {
     const countryItems = getCodeList();
 
-    return Object.keys(countryItems).map(countryCode => (
+    const countryOptions = Object.keys(countryItems).map(countryCode => (
       <option value={countryCode} key={countryCode}>
         {countryItems[countryCode]}
       </option>
     ));
+
+    countryOptions.unshift(
+      <option key="noCountry" value="">
+        Select a country
+      </option>
+    );
+
+    return countryOptions;
   };
 
   renderInputClass = (inputName, inputClass) =>

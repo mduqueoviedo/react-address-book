@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { rootStyle, newContactElementStyle } from './appStyle';
 import { Contact } from './components/contact/Contact';
 import { NewContactModal } from './components/newContactModal/NewContactModal';
+import { ConfirmationModal } from './components/confirmationModal/ConfirmationModal';
 import { StorageApi } from './storage/storageApi';
 import { validateContact } from './utils/contactValidation';
 
@@ -13,8 +14,10 @@ export class App extends Component {
   storageApi = new StorageApi();
 
   state = {
-    isModalOpen: false,
+    isFormModalOpen: false,
+    isConfirmationModalOpen: false,
     contactToEdit: undefined,
+    contactToDelete: undefined,
     contacts: [],
     contactFormErrors: [],
   };
@@ -25,7 +28,13 @@ export class App extends Component {
 
   refreshContacts = () => {
     this.storageApi.retrieveAllContacts().then(contacts => {
-      this.setState({ contacts, isModalOpen: false, contactFormErrors: [] });
+      this.setState({
+        contacts,
+        isFormModalOpen: false,
+        isConfirmationModalOpen: false,
+        contactFormErrors: [],
+        contactToDelete: undefined,
+      });
     });
   };
 
@@ -34,24 +43,37 @@ export class App extends Component {
       contactToEdit: prevState.contacts.find(
         contact => contactId === contact.id
       ),
-      isModalOpen: true,
+      isFormModalOpen: true,
     }));
   };
 
   removeContact = contactId => {
-    this.storageApi.deleteContact(contactId);
+    this.setState({
+      contactToDelete: contactId,
+      isConfirmationModalOpen: true,
+    });
+  };
+
+  confirmDelete = () => {
+    this.storageApi.deleteContact(this.state.contactToDelete);
     this.refreshContacts();
   };
 
-  setIsModalOpen = newModalState => () => this.modalStateHandler(newModalState);
+  cancelDelete = () => {
+    this.setState({
+      isConfirmationModalOpen: false,
+      contactToDelete: undefined,
+    });
+  };
 
-  modalStateHandler = modalState => {
-    this.setState(prevState => {
-      return {
-        isModalOpen: modalState,
-        contactToEdit: modalState ? prevState.contactToEdit : undefined,
-        contactFormErrors: [],
-      };
+  setIsModalOpen = newModalState => () =>
+    this.contactFormModalStateHandler(newModalState);
+
+  contactFormModalStateHandler = modalState => {
+    this.setState({
+      isFormModalOpen: modalState,
+      contactToEdit: undefined,
+      contactFormErrors: [],
     });
   };
 
@@ -78,14 +100,23 @@ export class App extends Component {
         ))
       : null;
 
-  renderModal = () =>
-    this.state.isModalOpen ? (
+  renderContactFormModal = () =>
+    this.state.isFormModalOpen ? (
       <NewContactModal
-        isOpen={this.state.isModalOpen}
+        isOpen={this.state.isFormModalOpen}
         handleClose={this.setIsModalOpen(false)}
         onContactSave={this.onContactSave}
         contactToEdit={this.state.contactToEdit}
         formErrors={this.state.contactFormErrors}
+      />
+    ) : null;
+
+  renderConfirmationModal = () =>
+    this.state.isConfirmationModalOpen ? (
+      <ConfirmationModal
+        isOpen={this.state.isConfirmationModalOpen}
+        onConfirm={this.confirmDelete}
+        onCancel={this.cancelDelete}
       />
     ) : null;
 
@@ -102,7 +133,8 @@ export class App extends Component {
           <FontAwesomeIcon icon="user-plus" />
         </div>
 
-        {this.renderModal()}
+        {this.renderContactFormModal()}
+        {this.renderConfirmationModal()}
       </div>
     );
   }

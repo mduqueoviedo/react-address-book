@@ -5,7 +5,14 @@ export class DbWrapper {
   retrieveAllContacts = () =>
     db.contacts.orderBy('lastName', 'firstName').toArray();
 
-  searchContacts = _ => db.contacts.orderBy('lastName', 'firstName').toArray();
+  searchContacts = (searchTerm, searchField) => {
+    const contacts =
+      searchTerm && ['firstName', 'lastName', 'email'].includes(searchField)
+        ? db.contacts.where(searchField).startsWithIgnoreCase(searchTerm)
+        : db.contacts;
+
+    return contacts.orderBy('lastName', 'firstName').toArray();
+  };
 
   deleteContact = contactId => {
     db.contacts.delete(contactId);
