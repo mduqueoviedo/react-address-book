@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactModal from 'react-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   appBodyStyle,
@@ -13,8 +12,6 @@ import { ConfirmationModal } from './components/confirmationModal/ConfirmationMo
 import { StorageApi } from './storage/storageApi';
 import { validateContact } from './utils/contactValidation';
 
-// Screen readers
-ReactModal.setAppElement('#root');
 export class App extends Component {
   storageApi = new StorageApi();
 

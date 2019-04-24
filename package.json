@@ -54,6 +54,12 @@
     "start": "webpack-dev-server --mode development --open --hot --port 4200",
     "build": "webpack --mode production",
     "eslint-fix": "eslint --fix \"src/**/*.js\"",
-    "test": "jest"
+    "test": "jest --verbose",
+    "test:watch": "jest --verbose --watch"
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/setupTests.js"
+    ]
   }
 }
