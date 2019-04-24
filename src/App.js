@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { rootStyle, newContactElementStyle } from './appStyle';
+import {
+  appBodyStyle,
+  newContactElementStyle,
+  headerStyle,
+  headerLinkStyle,
+} from './appStyle';
 import { Contact } from './components/contact/Contact';
 import { NewContactModal } from './components/newContactModal/NewContactModal';
 import { ConfirmationModal } from './components/confirmationModal/ConfirmationModal';
@@ -122,20 +127,27 @@ export class App extends Component {
 
   render() {
     return (
-      <div className={rootStyle}>
-        <h2>React Address Book</h2>
-        <div>{this.renderContacts()}</div>
-        <div
-          className={newContactElementStyle}
-          onClick={this.setIsModalOpen(true)}
-          title="New Contact"
-        >
-          <FontAwesomeIcon icon="user-plus" />
+      <>
+        <div className={headerStyle}>
+          <div>REACT ADDRESS BOOK</div>
+          <div onClick={this.setIsModalOpen(true)} className={headerLinkStyle}>
+            New Contact
+          </div>
         </div>
+        <div className={appBodyStyle}>
+          <div>{this.renderContacts()}</div>
+          <div
+            className={newContactElementStyle}
+            onClick={this.setIsModalOpen(true)}
+            title="New Contact"
+          >
+            <FontAwesomeIcon icon="user-plus" />
+          </div>
 
-        {this.renderContactFormModal()}
-        {this.renderConfirmationModal()}
-      </div>
+          {this.renderContactFormModal()}
+          {this.renderConfirmationModal()}
+        </div>
+      </>
     );
   }
 }

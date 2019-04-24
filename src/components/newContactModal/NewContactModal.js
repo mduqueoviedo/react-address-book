@@ -17,7 +17,9 @@ import {
   formNoteStyle,
   invalidInputStyle,
   errorDescriptionStyle,
+  errorTextStyle,
 } from './newContactModalStyle';
+import { capitalize } from '../../utils/stringUtils';
 
 export class NewContactModal extends Component {
   constructor(props) {
@@ -25,7 +27,13 @@ export class NewContactModal extends Component {
     this.state =
       this.props.contactToEdit !== undefined
         ? { ...this.props.contactToEdit }
-        : { id: '', firstName: '', lastName: '', email: '', country: '' };
+        : {
+            id: '',
+            firstName: '',
+            lastName: '',
+            email: '',
+            country: '',
+          };
   }
 
   handleFormInputChange = event => {
@@ -63,19 +71,28 @@ export class NewContactModal extends Component {
       item => item[inputName] && item[inputName] !== ''
     ).length > 0
       ? classes(inputClass, invalidInputStyle)
-      : formInputStyle;
+      : inputClass;
 
   renderErrors = () =>
-    this.props.formErrors.length > 0
-      ? this.props.formErrors.map(error =>
-          Object.keys(error).map(errorKey => (
-            <div
-              className={errorDescriptionStyle}
-              key={`${errorKey}${error[errorKey]}`}
-            >{`${errorKey} is ${error[errorKey]}`}</div>
-          ))
-        )
-      : null;
+    this.props.formErrors.length > 0 ? (
+      <>
+        <div className={errorTextStyle}>
+          The contact could not be saved. Please fix the following errors first:
+        </div>
+        <ul>
+          {this.props.formErrors.map(error =>
+            Object.keys(error).map(errorKey => (
+              <li
+                className={errorDescriptionStyle}
+                key={`${errorKey}${error[errorKey]}`}
+              >{`${capitalize(errorKey)} is ${error[errorKey]}`}</li>
+            ))
+          )}
+        </ul>
+      </>
+    ) : (
+      <div className={formNoteStyle}>All fields are required</div>
+    );
 
   render = () => (
     <ReactModal
@@ -144,7 +161,7 @@ export class NewContactModal extends Component {
           >
             Submit
           </button>
-          <div className={formNoteStyle}>All fields are required</div>
+
           <div>{this.renderErrors()}</div>
         </form>
         <div onClick={this.props.handleClose} className={closeControlStyle}>

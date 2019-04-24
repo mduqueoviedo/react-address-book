@@ -56,7 +56,10 @@ export const errorDescriptionStyle = style({
   marginTop: 5,
 });
 
-export const formSelectStyle = style({ fontSize: 14 });
+export const formSelectStyle = style({
+  fontSize: 14,
+  width: 215,
+});
 
 export const submitButtonStyle = style({
   fontSize: 14,
@@ -66,11 +69,15 @@ export const submitButtonStyle = style({
   fontWeight: 600,
   textTransform: 'uppercase',
   marginTop: 10,
+  marginBottom: 20,
 });
 
 export const formNoteStyle = style({
-  marginTop: 20,
   fontSize: 12,
   fontStyle: 'italic',
   color: '#111',
+});
+
+export const errorTextStyle = style({
+  fontSize: 12,
 });
