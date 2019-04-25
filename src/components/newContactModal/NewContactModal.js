@@ -164,7 +164,11 @@ export class NewContactModal extends Component {
 
           <div>{this.renderErrors()}</div>
         </form>
-        <div onClick={this.props.handleClose} className={closeControlStyle}>
+        <div
+          onClick={this.props.handleClose}
+          className={closeControlStyle}
+          title="Close"
+        >
           <FontAwesomeIcon icon="times" />
         </div>
       </div>
