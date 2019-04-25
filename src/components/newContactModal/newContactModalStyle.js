@@ -4,7 +4,7 @@ export const modalStyle = {
   width: '40%',
   height: 350,
   left: '30%',
-  padding: 10,
+  padding: 20,
   border: 0,
 };
 
@@ -26,6 +26,7 @@ export const formStyle = style({
 export const closeControlStyle = style({
   alignSelf: 'flex-start',
   cursor: 'pointer',
+  fontSize: 20,
 });
 
 export const formGroupStyle = style({
