@@ -1,12 +1,12 @@
+import React from 'react';
+import { shallow } from 'enzyme';
+import { App } from './App';
+
 jest.mock('./storage/storageApi.js', () => ({
   StorageApi: () => ({
     retrieveAllContacts: () => Promise.resolve(jest.fn())
   }) 
 }));
-
-import React from 'react';
-import { App } from './App';
-import { shallow } from 'enzyme';
 
 describe('Base App component', () => {
   it('renders correctly', () => {
