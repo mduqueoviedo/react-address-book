@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import { App } from './App';
 import { Contact } from './contact/Contact'; 
 
@@ -62,6 +62,15 @@ describe('Base App component', () => {
   });
 
   it("editing a contact will open the contact form with the contact data", () => {
-    // TODO
+    const appComponent = mount(<App />);
+    appComponent.setState({ contacts: contactsList});
+    expect(appComponent.find(Contact).length).toEqual(3);
+    
+    const contactCard = appComponent.find(Contact).first();
+    const editContactButton = contactCard.find('div[title="Edit Contact"]');
+
+    expect(appComponent.state().isFormModalOpen).toBe(false);
+    editContactButton.simulate('click');
+    expect(appComponent.state().isFormModalOpen).toBe(true);
   })
 });
