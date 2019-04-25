@@ -6,11 +6,11 @@ import {
   headerStyle,
   headerLinkStyle,
 } from './appStyle';
-import { Contact } from './components/contact/Contact';
-import { NewContactModal } from './components/newContactModal/NewContactModal';
-import { ConfirmationModal } from './components/confirmationModal/ConfirmationModal';
-import { StorageApi } from './storage/storageApi';
-import { validateContact } from './utils/contactValidation';
+import { Contact } from './contact/Contact';
+import { NewContactModal } from './newContactModal/NewContactModal';
+import { ConfirmationModal } from './confirmationModal/ConfirmationModal';
+import { StorageApi } from '../storage/storageApi';
+import { validateContact } from '../utils/contactValidation';
 
 export class App extends Component {
   storageApi = new StorageApi();
