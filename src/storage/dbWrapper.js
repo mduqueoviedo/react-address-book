@@ -2,8 +2,10 @@ import uuid from 'uuidv4';
 import db from './dbSchema';
 
 export class DbWrapper {
-  retrieveAllContacts = () =>
-    db.contacts.orderBy('lastName', 'firstName').toArray();
+  retrieveAllContacts = () => {
+    console.log(db);
+    return db.contacts.orderBy('lastName', 'firstName').toArray();
+  };
 
   // searchContacts = (searchTerm, searchField) => {
   //   const contacts =
