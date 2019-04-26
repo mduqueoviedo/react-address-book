@@ -34,3 +34,24 @@ export const newContactElementStyle = style({
   fontSize: 30,
   cursor: 'pointer',
 });
+
+export const searchInputStyle = style({
+  padding: 5,
+  width: 300,
+  fontSize: 14,
+  border: '1px solid #aaa',
+  outline: 'none',
+  marginBottom: 10,
+  borderRadius: 2,
+});
+
+export const noContactsLabelStyle = style({
+  marginTop: 20,
+  fontSize: 16,
+});
+
+export const newContactTextStyle = style({
+  cursor: 'pointer',
+  textDecoration: 'underline',
+  marginLeft: 5,
+});

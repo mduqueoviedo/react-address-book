@@ -5,6 +5,9 @@ import {
   newContactElementStyle,
   headerStyle,
   headerLinkStyle,
+  searchInputStyle,
+  noContactsLabelStyle,
+  newContactTextStyle,
 } from './appStyle';
 import { Contact } from './contact/Contact';
 import { NewContactModal } from './newContactModal/NewContactModal';
@@ -22,6 +25,7 @@ export class App extends Component {
     contactToDelete: undefined,
     contacts: [],
     contactFormErrors: [],
+    searchTerm: '',
   };
 
   componentDidMount() {
@@ -29,7 +33,12 @@ export class App extends Component {
   }
 
   refreshContacts = () => {
-    this.storageApi.retrieveAllContacts().then(contacts => {
+    const apiCall =
+      this.state.searchTerm !== ''
+        ? this.storageApi.searchContacts(this.state.searchTerm)
+        : this.storageApi.retrieveAllContacts();
+
+    apiCall.then(contacts => {
       this.setState({
         contacts,
         isFormModalOpen: false,
@@ -90,17 +99,34 @@ export class App extends Component {
     }
   };
 
+  renderNoContactsInfo = () =>
+    this.state.searchTerm ? (
+      'No contacts found'
+    ) : (
+      <>
+        No contacts stored (yet)
+        <span
+          onClick={this.setIsModalOpen(true)}
+          className={newContactTextStyle}
+        >
+          Create one?
+        </span>
+      </>
+    );
+
   renderContacts = () =>
-    this.state.contacts.length > 0
-      ? this.state.contacts.map(contact => (
-          <Contact
-            contactData={contact}
-            key={contact.id}
-            onEdit={this.editContact}
-            onDelete={this.removeContact}
-          />
-        ))
-      : null;
+    this.state.contacts.length > 0 ? (
+      this.state.contacts.map(contact => (
+        <Contact
+          contactData={contact}
+          key={contact.id}
+          onEdit={this.editContact}
+          onDelete={this.removeContact}
+        />
+      ))
+    ) : (
+      <div className={noContactsLabelStyle}>{this.renderNoContactsInfo()}</div>
+    );
 
   renderContactFormModal = () =>
     this.state.isFormModalOpen ? (
@@ -122,6 +148,15 @@ export class App extends Component {
       />
     ) : null;
 
+  handleSearch = event => {
+    this.setState(
+      {
+        searchTerm: event.target.value,
+      },
+      this.refreshContacts
+    );
+  };
+
   render() {
     return (
       <>
@@ -132,6 +167,15 @@ export class App extends Component {
           </div>
         </div>
         <div className={appBodyStyle}>
+          <div>
+            <input
+              type="text"
+              value={this.state.searchTerm}
+              onChange={this.handleSearch}
+              placeholder="Search contacts"
+              className={searchInputStyle}
+            />
+          </div>
           <div>{this.renderContacts()}</div>
           <div
             className={newContactElementStyle}

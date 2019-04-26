@@ -2,19 +2,33 @@ import uuid from 'uuidv4';
 import db from './dbSchema';
 
 export class DbWrapper {
-  retrieveAllContacts = () => {
-    console.log(db);
-    return db.contacts.orderBy('lastName', 'firstName').toArray();
+  retrieveAllContacts = () =>
+    db.contacts.orderBy('lastName', 'firstName').toArray();
+
+  searchContacts = searchTerm => {
+    const foundContacts = [];
+    ['firstName', 'lastName', 'email'].forEach(field => {
+      foundContacts.push(
+        db.contacts
+          .where(field)
+          .startsWithIgnoreCase(searchTerm)
+          .toArray()
+      );
+    });
+
+    return Promise.all(foundContacts).then(results => {
+      const nonRepeatedResults = results
+        .reduce((acc, current) => acc.concat(current), [])
+        .reduce((acc, current) => {
+          if (!acc.find(record => record.id === current.id)) {
+            acc.push(current);
+          }
+          return acc;
+        }, []);
+
+      return nonRepeatedResults;
+    });
   };
-
-  // searchContacts = (searchTerm, searchField) => {
-  //   const contacts =
-  //     searchTerm && ['firstName', 'lastName', 'email'].includes(searchField)
-  //       ? db.contacts.where(searchField).startsWithIgnoreCase(searchTerm)
-  //       : db.contacts;
-
-  //   return contacts.orderBy('lastName', 'firstName').toArray();
-  // };
 
   deleteContact = contactId => {
     db.contacts.delete(contactId);

@@ -3,7 +3,7 @@ import { style } from 'typestyle';
 export const contactCardStyle = style({
   backgroundColor: 'lightYellow',
   margin: '10px 0',
-  width: '25%',
+  width: '30%',
   padding: 10,
   borderRadius: 5,
   lineHeight: '22px',

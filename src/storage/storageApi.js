@@ -7,11 +7,9 @@ export class StorageApi {
 
   retrieveAllContacts = () => this.dbWrapper.retrieveAllContacts();
 
-  deleteContact = contactId => {
-    return this.dbWrapper.deleteContact(contactId);
-  };
+  searchContacts = searchTerm => this.dbWrapper.searchContacts(searchTerm);
 
-  saveContact = contactInfo => {
-    return this.dbWrapper.saveContact(contactInfo);
-  };
+  deleteContact = contactId => this.dbWrapper.deleteContact(contactId);
+
+  saveContact = contactInfo => this.dbWrapper.saveContact(contactInfo);
 }

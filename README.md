@@ -14,6 +14,8 @@ Get all dependencies with npm or yarn:
 
 `yarn start`
 
+The application can then be found at http://localhost:4200
+
 ## Running test suite
 
 `yarn test`
