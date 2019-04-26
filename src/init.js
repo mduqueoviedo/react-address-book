@@ -9,6 +9,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faUser, faEnvelope } from '@fortawesome/free-regular-svg-icons';
 
+// Get only used icons to reduce library size
 export const initFontAwesomeIcons = () => {
   library.add(
     faUserPlus,

@@ -12,6 +12,18 @@ import {
 } from './confirmationModalStyle';
 
 export class ConfirmationModal extends Component {
+  renderButtons = () =>
+    [true, false].map(buttonValue => (
+      <button
+        type="button"
+        className={buttonStyle}
+        onClick={buttonValue ? this.props.onConfirm : this.props.onCancel}
+        key={buttonValue}
+      >
+        {buttonValue ? 'Yes' : 'No'}
+      </button>
+    ));
+
   render() {
     return (
       <ReactModal
@@ -31,22 +43,7 @@ export class ConfirmationModal extends Component {
           <div className={confirmationTextStyle}>
             Do you really want to delete this contact?
           </div>
-          <div>
-            <button
-              type="button"
-              className={buttonStyle}
-              onClick={this.props.onConfirm}
-            >
-              Yes
-            </button>
-            <button
-              type="button"
-              className={buttonStyle}
-              onClick={this.props.onCancel}
-            >
-              No
-            </button>
-          </div>
+          <div>{this.renderButtons()}</div>
         </div>
       </ReactModal>
     );
