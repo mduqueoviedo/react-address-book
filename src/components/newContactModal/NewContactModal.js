@@ -159,7 +159,7 @@ export class NewContactModal extends Component {
             onClick={this.handleSubmitContact}
             className={submitButtonStyle}
           >
-            Submit
+            Save
           </button>
 
           <div>{this.renderErrors()}</div>

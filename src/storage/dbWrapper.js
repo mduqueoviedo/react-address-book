@@ -1,9 +1,12 @@
 import uuid from 'uuidv4';
 import db from './dbSchema';
+import { sortContacts } from '../utils/sortContacts';
 
 export class DbWrapper {
   retrieveAllContacts = () =>
-    db.contacts.orderBy('lastName', 'firstName').toArray();
+    Promise.resolve(db.contacts.toArray()).then(contacts =>
+      sortContacts(contacts)
+    );
 
   searchContacts = searchTerm => {
     const foundContacts = [];
@@ -16,18 +19,18 @@ export class DbWrapper {
       );
     });
 
-    return Promise.all(foundContacts).then(results => {
-      const nonRepeatedResults = results
-        .reduce((acc, current) => acc.concat(current), [])
-        .reduce((acc, current) => {
-          if (!acc.find(record => record.id === current.id)) {
-            acc.push(current);
-          }
-          return acc;
-        }, []);
-
-      return nonRepeatedResults;
-    });
+    return Promise.all(foundContacts).then(results =>
+      sortContacts(
+        results
+          .reduce((acc, current) => acc.concat(current), [])
+          .reduce((acc, current) => {
+            if (!acc.find(record => record.id === current.id)) {
+              acc.push(current);
+            }
+            return acc;
+          }, [])
+      )
+    );
   };
 
   deleteContact = contactId => {
