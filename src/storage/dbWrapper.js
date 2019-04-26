@@ -7,7 +7,7 @@ export class DbWrapper {
 
   searchContacts = searchTerm => {
     const foundContacts = [];
-    ['firstName', 'lastName', 'email'].forEach(field => {
+    ['firstName', 'lastName', 'email', 'country'].forEach(field => {
       foundContacts.push(
         db.contacts
           .where(field)
