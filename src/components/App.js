@@ -12,11 +12,11 @@ import {
 import { Contact } from './contact/Contact';
 import { NewContactModal } from './newContactModal/NewContactModal';
 import { ConfirmationModal } from './confirmationModal/ConfirmationModal';
-import { StorageApi } from '../storage/storageApi';
+import { StorageApiFactory } from '../storage/storageApiFactory';
 import { validateContact } from '../utils/contactValidation';
 
 export class App extends Component {
-  storageApi = new StorageApi();
+  storageApi = StorageApiFactory();
 
   state = {
     isFormModalOpen: false,

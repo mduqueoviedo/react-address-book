@@ -31,8 +31,8 @@ const mockedRetrieveContacts = jest.fn().mockReturnValue(contactsList);
 
 global.console.error = jest.fn();
 
-jest.mock('../storage/storageApi.js', () => ({
-  StorageApi: () => ({
+jest.mock('../storage/storageApiFactory.js', () => ({
+  StorageApiFactory: () => ({
     retrieveAllContacts: () => Promise.resolve(mockedRetrieveContacts)
   }) 
 }));

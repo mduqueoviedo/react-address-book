@@ -9,12 +9,15 @@ jest.mock('./dbWrapper.js', () => ({
     deleteContact: mockedDeleteContact
   }) 
 }));
-import { StorageApi } from './StorageApi';
+import { StorageApiFactory } from './StorageApiFactory';
 
 describe("Storage Api", () => {
-  const storageApi = new StorageApi();
+  const storageApi = StorageApiFactory();
   it("creates an instance of the storage api", () => {
-    expect(storageApi).toBeInstanceOf(StorageApi);
+    expect(storageApi).toHaveProperty('retrieveAllContacts');
+    expect(storageApi).toHaveProperty('searchContacts');
+    expect(storageApi).toHaveProperty('deleteContact');
+    expect(storageApi).toHaveProperty('saveContact');
   });
 
   it("retrieveAllContacts gets a list of contacts from dbWrapper", () => {
